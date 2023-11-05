@@ -1,0 +1,5 @@
+from .grade import GradeSerializer
+from .gradeGroup import GradeGroupSerializer
+from .subject import SubjectSerializer
+from .subjectWithGroupsOfGrades import SubjectWithGroupsOfGradesSerializer
+from .extensionCourse import ExtensionCourseSerializer

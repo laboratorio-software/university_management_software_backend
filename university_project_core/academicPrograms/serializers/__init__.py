@@ -1,0 +1,3 @@
+from .academicProgram import AcademicProgramSerializer
+from .academicProgramWithSubjects import AcademicProgramWithSubjectsSerializer
+from .changesInSubject import ChangesInSubjectSerializer

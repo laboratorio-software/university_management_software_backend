@@ -1,3 +1,10 @@
+## Toher not specfied TO-DOs
+TODO #1 - When deleting records, we need to ensure that the delete process is also being performed in DB.
+TODO #2 - I quit (05-10 at 3:27 am) in gradeGroup model definition. Left subject and subjectWithGroupsOfGrades models, all serializer and viewspkgs for this models, and the last app, groups.
+
+
+<hr>
+
 ## VARIOUS IMPORTANT NOTES
 
 1. Hay un superusuario de prueba con nombre *test* , email *test@example.com* y contraseña *default123* (contraseña de esta manera debido al protoclo de seguridad en contraseñas, que no lo quise bypasear :v). En producción y demás deber;a ser borrado y solamente se podrá acceder mediante usuarios mejor esepcificados. 

@@ -42,9 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'coreapi',
     'users',
-    'achademicPrograms',
+    'academicPrograms',
     'subjects',
-    'extensionCourses',
     'groups'
 ]
 

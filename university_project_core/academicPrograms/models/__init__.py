@@ -1,0 +1,3 @@
+from .academicProgram import AcademicProgram
+from .academicProgramWithSubjects import AcademicProgramWithSubjects
+from .changesInSubject import ChangesInSubject
