@@ -133,3 +133,6 @@ dmypy.json
 
 # Cython debug symbols #
 cython_debug/
+
+# Returned DB binary
+university_project_core/university_management_labsw
