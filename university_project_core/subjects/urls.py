@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
-from rest_framework.documentation import include_docs_urls
+# from rest_framework.documentation import include_docs_urls
 
 from .viewspkg.grade import GradeViewSet
 from .viewspkg.gradeGroup import GradeGroupViewSet
@@ -18,6 +18,6 @@ router.register(r'extensioncourses',
                 ExtensionCourseViewSet, 'extensioncourses')
 
 urlpatterns = [
-    path("api/", include(router.urls)),
-    path("api/docs/", include_docs_urls(title="Subjects API"))
+    path("api/", include(router.urls))
+    # path("api/docs/", include_docs_urls(title="Subjects API"))
 ]

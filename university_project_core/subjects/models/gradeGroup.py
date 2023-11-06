@@ -3,7 +3,7 @@ from .subject import Subject
 
 APPROVED = 'APROBADO'
 REPROVED = 'REPROBADO'
-GRADE_GROUP_CHOICES = [(APPROVED, 'Aprobado'), (REPROVED, 'Reprobado')]
+GROUP_STATE_CHOICES = [(APPROVED, 'Aprobado'), (REPROVED, 'Reprobado')]
 
 
 class GradeGroup(models.Model):
@@ -14,7 +14,7 @@ class GradeGroup(models.Model):
     grade_group_score = models.FloatField()
     # TODO: Add this validation  'si puntaje >= 3.0 -> APROBADO, demás REPROBADO ']
     grade_group_state = models.CharField(
-        max_length=10, choices=GRADE_GROUP_CHOICES)
+        max_length=10, choices=GROUP_STATE_CHOICES)
     # TODO: Add this validation '0.0 <= porcentaje_en_asignatura <= 1.0' ]
     percentage_in_subject = models.FloatField()
     is_final_general_grade = models.BooleanField(default=False)

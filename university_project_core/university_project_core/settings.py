@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +22,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-d=d&njfep42d@=8k&%8ot%hg+ar=ypw^3grx!kbk9vb1nld)97'
+SECRET_KEY = config('DJANGO_SECRET_KEY', default='valor-default-secreto')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DJANGO_DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', default='localhost', cast=lambda v: [
+                       s.strip() for s in v.split(',')])
 
 
 # Application definition
@@ -40,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
-    'coreapi',
+    'drf_spectacular',
     'users',
     'academicPrograms',
     'subjects',
@@ -84,8 +86,12 @@ WSGI_APPLICATION = 'university_project_core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT')
     }
 }
 
@@ -141,5 +147,29 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # API Docs
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+    # 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'University Project API',
+    'DESCRIPTION': 'This is the API for the University Project in the software laboratory course.',
+    # 'VERSION': '1.0.0',
+    'SERVE_PUBLIC': True,
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SERVE_PERMISSIONS': ['rest_framework.permissions.AllowAny'],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
+    # OTHER SETTINGS
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+        'displayOperationId': True,
+        'defaultModelsExpandDepth': -1,
+        'defaultModelExpandDepth': 3,
+        'defaultModelRendering': 'model',
+        'displayRequestDuration': True,
+        # 'docExpansion': 'none',
+        'syntaxHighlight.activate': True,
+        'syntaxHighlight.theme': 'monokai',
+    },
 }
