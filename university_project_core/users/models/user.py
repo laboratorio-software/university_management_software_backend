@@ -21,22 +21,23 @@ class UserProfile(models.Model):
     identification_type = models.ForeignKey(
         IdentityDocumentType, on_delete=models.CASCADE)
     identification_number = models.CharField(
-        max_length=12)  # Strict matching for this field
-    phone_number = models.CharField(max_length=20)
+        max_length=12, unique=True)  # Strict matching for this field
+    home_phone_number = models.CharField(max_length=20, blank=True)
+    personal_phone_number = models.CharField(max_length=20)
     address = models.CharField(max_length=255)  # null is false by default
     role_id = models.ForeignKey(Role, on_delete=models.CASCADE)
     # integer [ref: > Programa_academico.id , not null] #TODO: Check this
     academic_program_id = models
-    career_average = models.FloatField()
-    status = models.CharField(max_length=10, choices=ESTADO)
+    career_average = models.FloatField(default=0.0)
+    status = models.CharField(max_length=10, choices=ESTADO, default=ACTIVE)
     semester = models.IntegerField(default=0)
-    created = models.DateTimeField(auto_created=True)
+    created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     @property
     def as_object(self):
         user_profile_as_object = {
-            "id": self.id,
+            "id": self.id,  # type: ignore
             "user": self.user,
             "first_name": self.first_name,
             "middle_name": self.middle_name,
@@ -44,7 +45,8 @@ class UserProfile(models.Model):
             "second_last_name": self.second_last_name,
             "identification_type": self.identification_type,
             "identification_number": self.identification_number,
-            "phone_number": self.phone_number,
+            "home_phone_number": self.home_phone_number,
+            "personal_phone_number": self.personal_phone_number,
             "address": self.address,
             "role_id": self.role_id,
             "academic_program_id": self.academic_program_id,
@@ -57,4 +59,4 @@ class UserProfile(models.Model):
         return user_profile_as_object
 
     def __str__(self):
-        return str(self.id) + "-" + self.user.username
+        return str(self.id) + "-" + self.user.username  # type: ignore

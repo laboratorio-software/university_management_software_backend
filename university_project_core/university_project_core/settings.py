@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 import os
 from decouple import config
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
     'drf_spectacular',
     'users',
     'academicPrograms',
@@ -95,6 +97,70 @@ DATABASES = {
     }
 }
 
+"""
+This configuration does the following:
+
+- Define a style to log messages
+- creates thre handlers, one for console, the other ones for files contianing info and errors logs. 
+    Each file will be rotated after 5mb of size, and will keep up to 5 backup files.
+- Each logger (the one that allows us to log messages) will use the handlers defined above, and will not propagate the logs (logs will not reach highe debug levels, only the defined one for it).
+
+- To use the logger, import it in the file you want to log messages, and use it like this:
+    
+        import logging
+    
+        logger = logging.getLogger(__name__)
+        logger.debug('Debug message')
+        logger.info('Info message')
+        logger.warning('Warning message')
+        logger.error('Error message')
+        logger.critical('Critical message')
+"""
+LOG_FILE_PATH = './logs'
+p = Path(LOG_FILE_PATH).resolve()
+p.mkdir(parents=True, exist_ok=True)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
+        'file_info': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': f'{p}/info.log',
+            # This configuration will rotate the myapp.log file when it reaches 5 MB and keep up to 5 backup files.
+            'maxBytes': 1024*1024*5,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'verbose',
+        },
+        # 'file_error': {
+        #     'level': 'ERROR',
+        #     'class': 'logging.handlers.RotatingFileHandler',
+        #     'filename': f'{p}/error.log',
+        #     'maxBytes': 1024*1024*5,  # 5 MB
+        #     'backupCount': 5,
+        #     'formatter': 'verbose',
+        # },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file_info'],
+            'level': 'DEBUG',
+            'propagate': False,
+        }
+    },
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -120,7 +186,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Bogota'
 
 USE_I18N = True
 
@@ -138,7 +204,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # connection with multiple backends - uncomment when we are about to configure the remote server
-# CORS_ALLOWED_ORIGINS = ['http://localhost:3000', 'http://192.168.0.15:3000']
+CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
 
 # Uploaded files - uncooment when needed
 
@@ -149,6 +215,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     # 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    # According to ChatGPT, this enables the default authentication for all views
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
 }
 
 SPECTACULAR_SETTINGS = {
@@ -172,4 +245,12 @@ SPECTACULAR_SETTINGS = {
         'syntaxHighlight.activate': True,
         'syntaxHighlight.theme': 'monokai',
     },
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    "USER_ID_FIELD": "username",
 }

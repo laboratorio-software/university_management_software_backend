@@ -16,7 +16,7 @@ class IdentityDocumentType(models.Model):
     @property
     def as_object(self):
         identity_document_type_as_object = {
-            "id": self.id,
+            "id": self.id,  # type: ignore
             "name": self.name,
             "created": self.created,
             "updated": self.updated
@@ -24,4 +24,4 @@ class IdentityDocumentType(models.Model):
         return identity_document_type_as_object
 
     def __str__(self):
-        return str(self.id) + "-" + self.name
+        return str(self.id) + "-" + self.name  # type: ignore
