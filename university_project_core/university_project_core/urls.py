@@ -27,9 +27,11 @@ urlpatterns = [
     # TODO: Why i in the holy fuck this isn showing in the swagger-ui?
     path('groups/', include('groups.urls')),
     path('users/', include('users.urls')),
+    path('api/chatbot/', include('chatbot.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/swagger-ui/',
          SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/redoc/',
          SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+
 ]

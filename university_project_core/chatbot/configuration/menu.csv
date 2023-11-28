@@ -1,0 +1,19 @@
+message,type,father_option
+¡Hola! ¿En qué puedo ayudarte?,greeting,
+1. Información general,option,
+2. Proceso de matrícula,option,
+3. Becas y ayudas,option,
+4. Contacto,option,
+Información general,suboption,1
+1. Historia de la universidad,suboption,Información general
+2. Programas académicos,suboption,Información general
+3. Instalaciones,suboption,Información general
+Proceso de matrícula,suboption,2
+1. Requisitos de matrícula,suboption,Proceso de matrícula
+2. Fechas importantes,suboption,Proceso de matrícula
+Becas y ayudas,suboption,3
+1. Tipos de becas,suboption,Becas y ayudas
+2. Requisitos para becas,suboption,Becas y ayudas
+Contacto,suboption,4
+1. Información de contacto,suboption,Contacto
+2. Horario de atención,suboption,Contacto

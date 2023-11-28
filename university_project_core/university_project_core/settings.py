@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'users',
     'academicPrograms',
     'subjects',
-    'groups'
+    'groups',
+    'chatbot'
 ]
 
 MIDDLEWARE = [
