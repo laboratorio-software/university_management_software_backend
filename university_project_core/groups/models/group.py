@@ -1,5 +1,6 @@
 from django.db import models
-from subjects.models import Subject, ExtensionCourse
+from subjects.models import Subject
+from subjects.models import ExtensionCourse
 
 
 class Group(models.Model):

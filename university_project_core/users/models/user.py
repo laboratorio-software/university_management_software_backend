@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+# from academicPrograms.models import AcademicProgram
 from .identityDocumentType import IdentityDocumentType
 from .role import Role
 
@@ -26,8 +27,8 @@ class UserProfile(models.Model):
     personal_phone_number = models.CharField(max_length=20)
     address = models.CharField(max_length=255)  # null is false by default
     role_id = models.ForeignKey(Role, on_delete=models.CASCADE)
-    # integer [ref: > Programa_academico.id , not null] #TODO: Check this
-    academic_program_id = models
+    academic_program_id = models.ForeignKey(
+        "academicPrograms.AcademicProgram", on_delete=models.CASCADE, null=True, blank=True)
     career_average = models.FloatField(default=0.0)
     status = models.CharField(max_length=10, choices=ESTADO, default=ACTIVE)
     semester = models.IntegerField(default=0)

@@ -1,6 +1,6 @@
 from django.db import models
-from users.models import UserProfile
 from .gradeGroup import GradeGroup
+from users.models import UserProfile
 
 APPROVED = 'APROBADO'
 REPROVED = 'REPROBADO'

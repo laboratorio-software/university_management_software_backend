@@ -5,7 +5,7 @@ from rest_framework import routers
 from .viewspkg.grade import GradeViewSet
 from .viewspkg.gradeGroup import GradeGroupViewSet
 from .viewspkg.subject import SubjectViewSet
-from .viewspkg.subjectWithGroupsOfGrades import SubjectWithGroupsOfGradesViewSet
+from .viewspkg.groupWithGroupsOfGrades import GroupWithGroupsOfGradesViewSet
 from .viewspkg.extensionCourse import ExtensionCourseViewSet
 
 router = routers.DefaultRouter()
@@ -13,7 +13,7 @@ router.register(r'grades', GradeViewSet, 'grades')
 router.register(r'gradeGroups', GradeGroupViewSet, 'gradeGroups')
 router.register(r'subjects', SubjectViewSet, 'subjects')
 router.register(r'subjectsWithGroupsOfGrades',
-                SubjectWithGroupsOfGradesViewSet, 'subjectsWithGroupsOfGrades')
+                GroupWithGroupsOfGradesViewSet, 'GroupWithGroupsOfGrades')
 router.register(r'extensioncourses',
                 ExtensionCourseViewSet, 'extensioncourses')
 

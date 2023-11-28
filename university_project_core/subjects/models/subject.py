@@ -1,15 +1,15 @@
 from django.db import models
-from academicPrograms.models import AcademicProgram
+# from academicPrograms.models import AcademicProgram
 
 
 class Subject(models.Model):
     name = models.CharField(max_length=50)  # not null by default
     # values like IS768, IS814, and so on
-    code = models.CharField(max_length=10)
+    code = models.CharField(max_length=10, blank=True, null=True)
     credits = models.IntegerField()
     schedule_intensity = models.IntegerField()  # hours per week
-    academic_program_id = models.ForeignKey(
-        AcademicProgram, on_delete=models.CASCADE)
+    # academic_program_id = models.ForeignKey(
+    #     AcademicProgram, on_delete=models.CASCADE)
     # TODO: Add this validation -> "It must always be less than or equal to the number of semesters of the program to which it belongs."
     place_in_semester = models.IntegerField()
     # TODO: the values would be only the codes of the subjects, how can we do these?
@@ -25,7 +25,7 @@ class Subject(models.Model):
             "code": self.code,
             "credits": self.credits,
             "schedule_intensity": self.schedule_intensity,
-            "academic_program_id": self.academic_program_id,
+            # "academic_program_id": self.academic_program_id,
             "place_in_semester": self.place_in_semester,
             "pre_requisite": self.pre_requisite,
             "created": self.created,
