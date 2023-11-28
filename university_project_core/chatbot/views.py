@@ -7,7 +7,7 @@ from .chatbot import chatbot
 
 class ChatbotAPIView(APIView):
     def load_menu_data(self):
-        menu_path = 'path/to/menu.csv'  # Ruta real a tu archivo CSV de menú
+        menu_path = 'configuration/menu.csv'  # Ruta archivo CSV de menú
         with open(menu_path, 'r', encoding='utf-8') as csv_file:
             csv_reader = csv.DictReader(csv_file)
             menu_data = {}
@@ -28,7 +28,7 @@ class ChatbotAPIView(APIView):
         return menu_data
 
     def load_response_data(self):
-        response_path = 'path/to/respuestas.csv'  # Ruta real a tu archivo CSV de respuestas
+        response_path = 'configuration/responses.csv'  # Ruta archivo CSV de respuestas
         with open(response_path, 'r', encoding='utf-8') as csv_file:
             csv_reader = csv.DictReader(csv_file)
             response_data = {}
@@ -44,7 +44,7 @@ class ChatbotAPIView(APIView):
         menu_data = self.load_menu_data()
 
         # Construir el mensaje de bienvenida con el menú
-        welcome_message = f"{menu_data['Greeting']}\n\nOpciones disponibles:\n"
+        welcome_message = f"{menu_data['greeting']}\n\nOpciones disponibles:\n"
         for i, option in enumerate(menu_data['options'], start=1):
             welcome_message += f"{i}. {option['message']}\n"
             for j, suboption in enumerate(option['suboptions'], start=1):

@@ -1,12 +1,8 @@
-from django.urls import path, include
-from rest_framework import routers
-
+# chatbot/urls.py
+from django.urls import path
 from .views import ChatbotAPIView
 
-router = routers.DefaultRouter()
-
-router.register(r'chatbot', ChatbotAPIView, 'chatbot')
-
-url_patterns = [
-    path('/api', include(router.urls))
+urlpatterns = [
+    path('chatbot/', ChatbotAPIView.as_view(), name='chatbot'),
 ]
+ 
