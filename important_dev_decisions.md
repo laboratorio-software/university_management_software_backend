@@ -4,6 +4,7 @@ TODO #2 - When taking DB into productions, we need to make sure there are admin 
 TODO #3 - Configure Swagger to show not the schem but the personalized data to the users create endpoint.
 TODO #4 - Find a way to delete records completeley from DB when deleting them from the app. Tables that have foreign keys are not being deleted completely. For example users profile when deleted, the User record in User table is not being deleted.
 TODO #4 - Add allowed hosts origns to the .env file
+TODO #5 - Remove created and updated from as_object property in models.
 <hr>
 
 ## VARIOUS IMPORTANT NOTES
