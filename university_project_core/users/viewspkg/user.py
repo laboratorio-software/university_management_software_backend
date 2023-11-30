@@ -122,6 +122,13 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         return Response(data={"credentials": credentials_obj.id, "profile": profile_obj.identification_number}, status=status.HTTP_201_CREATED)
         # return Response(data={}, status=status.HTTP_201_CREATED)
 
+    @action(detail=True, methods=["get"])
+    def user_by_id(self, request, identification_number):
+        # logger.info("User by id request: %s", identification_number)
+        user = UserProfile.objects.get(pk=identification_number)
+        serializer = self.get_serializer(user)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
     @action(detail=False, methods=["post"])
     def logout(self, request):
         try:
@@ -131,5 +138,5 @@ class UserProfileViewSet(viewsets.ModelViewSet):
             token.blacklist()
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
-            logger.info("Logout error: %s", e)
+            logger.info(f'Logout error: {e}')
             return Response(status=status.HTTP_400_BAD_REQUEST)

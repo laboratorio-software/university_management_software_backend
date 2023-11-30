@@ -1,7 +1,14 @@
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework.parsers import JSONParser
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from ..models.group import Group
 from ..serializers.group import GroupSerializer
+from subjects.serializers.subject import SubjectSerializer
+import logging
+
+logger = logging.getLogger("django")
 
 
 @extend_schema_view(
@@ -33,6 +40,14 @@ from ..serializers.group import GroupSerializer
         responses={204: None},
     ),
 )
-class GroupViewSet(viewsets.ViewSet):
+class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+    @action(methods=["get"], detail=True)
+    def subject_by_group(self, request, pk=None):
+        subject = Group.objects.get(id=pk).subject_id
+        logger.info(f'Subject for group {pk}: {subject.as_object}')
+        serializer = SubjectSerializer(subject)
+        logger.info(f'SUbject data sent')
+        return Response(data=serializer.data, status=200)
