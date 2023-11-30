@@ -34,4 +34,4 @@ class Subject(models.Model):
         return subject_as_object
 
     def __str__(self) -> str:
-        return str(self.id) + "-" + self.code + "-" + self.name + "-" + str(self.credits)
+        return str(self.id) + "-" + self.code + "-" + self.name + "-"

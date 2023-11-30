@@ -1,4 +1,7 @@
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework import status
+from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from ..models.classes_in_group import ClassesInGroup
 from ..serializers.classes_in_group import ClassesInGroupSerializer
@@ -33,6 +36,15 @@ from ..serializers.classes_in_group import ClassesInGroupSerializer
         responses={204: None},
     ),
 )
-class ClassInGroupViewSet(viewsets.ViewSet):
+class ClassInGroupViewSet(viewsets.ModelViewSet):
     queryset = ClassesInGroup.objects.all()
     serializer_class = ClassesInGroupSerializer
+
+    @action(detail=True, methods=['get'])
+    def classes_in_group(self, request, pk=None):
+        queryset = self.get_queryset().filter(group_id=pk)  # pk is the group id
+        classes = []
+        for data in queryset:
+            class_info = data.class_id.as_object
+            classes.append(class_info)
+        return Response(data=classes, status=status.HTTP_200_OK)

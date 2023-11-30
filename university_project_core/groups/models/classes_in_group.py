@@ -16,10 +16,8 @@ class ClassesInGroup(models.Model):
             "id": self.id,
             "group_id": self.group_id,
             "class_id": self.class_id,
-            "created": self.created,
-            "updated": self.updated,
         }
         return classes_in_group_as_object
 
-    def __Str__(self) -> str:
+    def __str__(self) -> str:
         return f"{self.id}-{self.group_id}-{self.class_id}"

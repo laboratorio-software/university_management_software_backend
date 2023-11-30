@@ -124,10 +124,14 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["get"])
     def user_by_id(self, request, identification_number):
-        # logger.info("User by id request: %s", identification_number)
         user = UserProfile.objects.get(pk=identification_number)
         serializer = self.get_serializer(user)
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        res = serializer.data
+        res["user"] = user.user.email
+        logger.info("User by id response: %s", res)
+        # for user in serializer.data:
+        #     user["user"] = user["user"]["email"]
+        return Response(data=res, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["post"])
     def logout(self, request):

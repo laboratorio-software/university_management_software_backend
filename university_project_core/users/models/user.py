@@ -54,6 +54,7 @@ class UserProfile(models.Model):
             "career_average": self.career_average,
             "status": self.status,
             "semester": self.semester,
+            "email": self.user.email,  # type: ignore
             "created": self.created,
             "updated": self.updated
         }
