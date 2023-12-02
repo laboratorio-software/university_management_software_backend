@@ -55,7 +55,7 @@ class UsersInGroupViewSet(viewsets.ModelViewSet):
             if user_in_group.user_id.id == professor_id:
                 professor_group = UsersInGroup.objects.filter(
                     group_id=user_in_group.group_id.id).exclude(user_id=professor_id)
-                logger.info(f'professor groups: {professor_group}')
+                # logger.info(f'professor groups: {professor_group}')
                 for group in professor_group:
                     serialize = self.get_serializer(group)
                     serialized_professor_group.append(serialize.data)

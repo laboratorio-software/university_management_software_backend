@@ -1,7 +1,12 @@
 from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework import status
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from ..models.gradeGroup import GradeGroup
 from ..serializers.gradeGroup import GradeGroupSerializer
+import logging
+
+logger = logging.getLogger("django")
 
 
 @extend_schema_view(
@@ -36,3 +41,16 @@ from ..serializers.gradeGroup import GradeGroupSerializer
 class GradeGroupViewSet(viewsets.ModelViewSet):
     serializer_class = GradeGroupSerializer
     queryset = GradeGroup.objects.all()
+
+    def create(self, request):
+        gradeGroup = request.data
+        gradeGroup['percentage_in_subject'] = float(
+            gradeGroup['percentage_in_subject'])
+        logger.info(f'Creating GradeGroup: {gradeGroup}')
+        serializer = self.get_serializer(data=gradeGroup)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            logger.info(f'serializer errors: {serializer.errors}')
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

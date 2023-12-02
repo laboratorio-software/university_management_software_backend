@@ -47,7 +47,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     @action(methods=["get"], detail=True)
     def subject_by_group(self, request, pk=None):
         subject = Group.objects.get(id=pk).subject_id
-        logger.info(f'Subject for group {pk}: {subject.as_object}')
+        # logger.info(f'Subject for group {pk}: {subject.as_object}')
         serializer = SubjectSerializer(subject)
-        logger.info(f'SUbject data sent')
+        logger.info(f'Subject data sent')
         return Response(data=serializer.data, status=200)
