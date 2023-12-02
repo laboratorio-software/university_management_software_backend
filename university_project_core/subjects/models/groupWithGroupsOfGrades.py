@@ -6,7 +6,7 @@ from groups.models import Group
 class GroupWithGroupsOfGrades(models.Model):
     grade_group_id = models.ForeignKey(GradeGroup, on_delete=models.CASCADE)
     group_id = models.ForeignKey(Group, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_created=True)
+    created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     @property

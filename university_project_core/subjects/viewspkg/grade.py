@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from ..models.gradeDefinition import GradeDefinition
 from ..models.grade import Grade
 from ..serializers.grade import GradeSerializer
 import logging
@@ -44,8 +45,26 @@ class GradeViewSet(viewsets.ModelViewSet):
     queryset = Grade.objects.all()
 
     @action(detail=True, methods=['GET'])
-    def grades_by_grade_group(self, request, pk=None):
-        grades = Grade.objects.filter(grade_group_id=pk)
-        serializer = self.get_serializer(grades, many=True)
-        logger.info(f'Grades by grade group: {serializer.data}')
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def grades_by_user(self, request, pk=None):
+        grades = self.get_queryset().filter(user_id=pk)
+        if (len(grades) == 0):
+            logger.info(f'Grades not found for user {pk}')
+            return Response({'message': 'No hay calificaciones para este usuario'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            serializer = self.get_serializer(grades, many=True)
+            formattedRes = serializer.data
+            for grade in formattedRes:
+                grade["grade_group_id"] = GradeDefinition.objects.get(
+                    id=grade["grade_definition_id"]).grade_group_id.id
+            logger.info(f'Grades by user {pk} found: {serializer.data}')
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def create(self, request):
+        logger.info(f'Grade creation request: {request.data}')
+        serialize = self.get_serializer(data=request.data)
+        if serialize.is_valid():
+            logger.info(f'Grade creation serializer: {serialize.data}')
+        else:
+            logger.error(
+                f'Grade creation serializer errors: {serialize.errors}')
+        return super().create(request)

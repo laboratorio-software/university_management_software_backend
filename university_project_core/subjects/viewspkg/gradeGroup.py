@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from ..models.gradeGroup import GradeGroup
+from ..models.groupWithGroupsOfGrades import GroupWithGroupsOfGrades
+from groups.models import Group
 from ..serializers.gradeGroup import GradeGroupSerializer
 import logging
 
@@ -47,10 +49,32 @@ class GradeGroupViewSet(viewsets.ModelViewSet):
         gradeGroup['percentage_in_subject'] = float(
             gradeGroup['percentage_in_subject'])
         logger.info(f'Creating GradeGroup: {gradeGroup}')
-        serializer = self.get_serializer(data=gradeGroup)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            logger.info(f'serializer errors: {serializer.errors}')
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        group_id = gradeGroup["group_id"]
+        gradeGroup.pop("group_id")
+
+        # serializer = self.get_serializer(data=gradeGroup)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     serializer
+        #     logger.info(f'GradeGroup created: {serializer.data}')
+        #     newGroupWithGroupOfGrades = GroupWithGroupsOfGrades.objects.create(
+        #         grade_group_id=serializer.data, group_id=group_id)
+        #     logger.info(
+        #         f'GroupWithGroupOfGrades created: {newGroupWithGroupOfGrades.id}')
+        #     return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # else:
+        #     logger.info(f'serializer errors: {serializer.errors}')
+        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # create the gradegroupe
+        gradeGroup = GradeGroup.objects.create(**gradeGroup)
+        logger.info(f'GradeGroup created: {gradeGroup}')
+        # get the group instance using the id
+        group = Group.objects.get(id=group_id)
+        # Create thegroupewithgroupofgrades instance
+        newGroupWithGroupOfGrades = GroupWithGroupsOfGrades.objects.create(
+            grade_group_id=gradeGroup, group_id=group)
+        logger.info(
+            f'GroupWithGroupOfGrades created: {newGroupWithGroupOfGrades.id}')
+        serializer = GradeGroupSerializer(gradeGroup)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

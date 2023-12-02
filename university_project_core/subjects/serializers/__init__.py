@@ -3,3 +3,4 @@ from .gradeGroup import GradeGroupSerializer
 from .subject import SubjectSerializer
 from .groupWithGroupsOfGrades import GroupWithGroupsOfGradesSerializer
 from .extensionCourse import ExtensionCourseSerializer
+from .gradeDefinition import GradeDefinitionSerializer

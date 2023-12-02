@@ -39,4 +39,4 @@ class GradeGroup(models.Model):
         return grade_group_as_object
 
     def __str__(self):
-        return str(self.id) + "-" + self.name + "-" + str(self.grade_group_score) + str(self.grade_group_state)
+        return str(self.id) + "-" + self.name + "-" + str(self.percentage_in_subject)

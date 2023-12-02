@@ -2,6 +2,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action
+from django.contrib.auth import login, logout
 from rest_framework import viewsets
 from rest_framework import status
 from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -124,6 +125,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["get"])
     def user_by_id(self, request, identification_number):
+        logger.info("User by id: %s", identification_number)
         user = UserProfile.objects.get(pk=identification_number)
         serializer = self.get_serializer(user)
         res = serializer.data

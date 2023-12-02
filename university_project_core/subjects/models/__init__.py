@@ -3,3 +3,4 @@ from .extensionCourse import ExtensionCourse
 from .gradeGroup import GradeGroup
 from .groupWithGroupsOfGrades import GroupWithGroupsOfGrades
 from .grade import Grade
+from .gradeDefinition import GradeDefinition
